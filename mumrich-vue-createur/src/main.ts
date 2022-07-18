@@ -2,5 +2,10 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import "virtual:windi.css";
 import "virtual:windi-devtools";
+import { router } from "./router";
 
-createApp(App).mount("#app");
+const app = createApp(App);
+
+app.use(router);
+
+app.mount("#app");

@@ -14,7 +14,7 @@
       required: true,
     },
     icon: {
-      type: Function as PropType<FunctionalComponent>,
+      type: Object as PropType<FunctionalComponent>,
       required: true,
     },
   });

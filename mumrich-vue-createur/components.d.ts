@@ -14,6 +14,10 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     WidgetIcon: typeof import('./src/components/WidgetIcon.vue')['default']
+    WidgetInstance: typeof import('./src/components/WidgetInstance.vue')['default']
+    WidgetRenderer: typeof import('./src/components/WidgetRenderer.vue')['default']
+    WidgetRendererVertical: typeof import('./src/components/WidgetRendererVertical.vue')['default']
     WidgetTeaser: typeof import('./src/components/WidgetTeaser.vue')['default']
+    WidgetTemplate: typeof import('./src/components/WidgetTemplate.vue')['default']
   }
 }

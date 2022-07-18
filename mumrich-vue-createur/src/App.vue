@@ -6,5 +6,6 @@
 <template>
   <h1><LogosVue />App</h1>
   <NavVue />
+  <hr />
   <router-view></router-view>
 </template>

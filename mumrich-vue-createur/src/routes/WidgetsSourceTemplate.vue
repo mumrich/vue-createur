@@ -1,8 +1,26 @@
 <template>
   <h2>Widgets Source Template</h2>
-  <div class="flex">
-    <WidgetTeaserVue v-for="(widget, i) in widgets" :key="i" v-bind="widget" />
-  </div>
+  <VueDraggable
+    class="flex"
+    v-model="widgetsSource"
+    :group="groupSource"
+    :sort="false"
+  >
+    <template #item="{ element }">
+      <WidgetTeaserVue v-bind="element" />
+    </template>
+  </VueDraggable>
+  <hr />
+  <VueDraggable
+    class="flex flex-col bg-gray-100 p-8"
+    v-model="widgetsTarget"
+    :group="groupTarget"
+    tag="ol"
+  >
+    <template #item="{ element }">
+      <li>{{ element.title }}</li>
+    </template>
+  </VueDraggable>
 </template>
 
 <script setup lang="ts">
@@ -11,8 +29,17 @@
   import WidgetTeaserVue from "../components/WidgetTeaser.vue";
   import MdiImageMultipleOutline from "~icons/mdi/image-multiple-outline";
   import MdiAttachment from "~icons/mdi/attachment";
+  import VueDraggable from "vuedraggable";
 
-  const widgets = ref([
+  const groupSource = ref({
+    name: "widgets",
+    pull: "clone",
+    put: false,
+  });
+  const groupTarget = ref({
+    name: groupSource.value.name,
+  });
+  const widgetsSource = ref([
     {
       title: "Text Block",
       icon: MdiFormatText,
@@ -26,4 +53,6 @@
       icon: MdiAttachment,
     },
   ]);
+
+  const widgetsTarget = ref<typeof widgetsSource.value>([]);
 </script>

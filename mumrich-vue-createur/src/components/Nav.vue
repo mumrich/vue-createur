@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav class="flex flex-row justify-around">
     <router-link v-for="route in routes" :key="route.path" :to="route.path">{{
       getTitle(route)
     }}</router-link>
@@ -14,3 +14,9 @@
     return route.name ?? route.path;
   }
 </script>
+
+<style scoped>
+  a:hover {
+    @apply text-green-700;
+  }
+</style>

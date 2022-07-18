@@ -7,6 +7,13 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    DynamicIcon: typeof import('./src/components/DynamicIcon.vue')['default']
+    Icon: typeof import('./src/components/Icon.vue')['default']
+    IconMdiFormatText: typeof import('~icons/mdi/format-text')['default']
     Nav: typeof import('./src/components/Nav.vue')['default']
+    RouterLink: typeof import('vue-router')['RouterLink']
+    RouterView: typeof import('vue-router')['RouterView']
+    WidgetIcon: typeof import('./src/components/WidgetIcon.vue')['default']
+    WidgetTeaser: typeof import('./src/components/WidgetTeaser.vue')['default']
   }
 }

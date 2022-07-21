@@ -35,6 +35,9 @@
   import { computed, FunctionalComponent, ref } from "vue";
   import { defineMemoireWithBroadcastChannel } from "mumrich-vue-memoire";
   import { v4 as uuidv4 } from "uuid";
+  import { importCreateurWidgetsPromise } from "../helpers/WidgetHelper";
+
+  const createurWidgets = await importCreateurWidgetsPromise();
 
   type WidgetTemplate = {
     title: string;

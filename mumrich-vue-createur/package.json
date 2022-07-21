@@ -15,7 +15,7 @@
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
-    "@iconify/json": "^2.1.79",
+    "@iconify/json": "^2.1.80",
     "@types/uuid": "^8.3.4",
     "@vitejs/plugin-vue": "^3.0.0",
     "@vue/compiler-sfc": "^3.2.37",
@@ -24,7 +24,7 @@
     "unplugin-vue-components": "^0.21.1",
     "vite": "^3.0.0",
     "vite-plugin-windicss": "^1.8.7",
-    "vue-tsc": "^0.38.4",
+    "vue-tsc": "^0.38.9",
     "windicss": "^3.5.6"
   }
 }

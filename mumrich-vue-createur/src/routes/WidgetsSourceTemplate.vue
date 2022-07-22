@@ -31,7 +31,11 @@
   import WidgetInstanceVue from "../components/WidgetInstance.vue";
   import { computed, ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
-  import { widgetMemoire, WidgetInstance, WidgetTemplate } from "../memoire";
+  import {
+    widgetMemoire,
+    CreateurWidgetInstance,
+    CreateurWidgetTemplate,
+  } from "../memoire";
 
   const groupSource = ref({
     name: "widgets",
@@ -41,7 +45,9 @@
   const groupTarget = ref({
     name: groupSource.value.name,
   });
-  const widgetsSource = computed(() => widgetMemoire.state.value.widgetsSource);
+  const widgetsSource = computed(
+    () => widgetMemoire.state.value.widgetTemplates
+  );
 
   const widgetsTarget = computed({
     get: () => widgetMemoire.state.value.widgetsTarget,
@@ -51,15 +57,15 @@
       }),
   });
 
-  function getItemKeyForSource(element: WidgetTemplate) {
-    return element.title;
+  function getItemKeyForSource(element: CreateurWidgetTemplate) {
+    return element.name;
   }
 
-  function getItemKeyForTarget(element: WidgetInstance) {
-    return `${element.uid}: '${element.title}'`;
+  function getItemKeyForTarget(element: CreateurWidgetInstance) {
+    return `${element.uid}: '${element.name}'`;
   }
 
-  function onClone(original: WidgetTemplate): WidgetInstance {
+  function onClone(original: CreateurWidgetTemplate): CreateurWidgetInstance {
     return Object.assign({}, original, { uid: uuidv4() });
   }
 </script>

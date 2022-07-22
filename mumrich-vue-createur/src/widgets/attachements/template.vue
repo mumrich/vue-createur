@@ -1,11 +1,11 @@
 <template>
-  <WidgetTemplateVue :title="title" :icon="MdiFormatText" />
+  <WidgetTemplateVue :title="title" :icon="MdiAttachment" />
 </template>
 
 <script setup lang="ts">
   import { ref } from "vue";
   import WidgetTemplateVue from "../../components/WidgetTemplate.vue";
-  import MdiFormatText from "~icons/mdi/format-text";
+  import MdiAttachment from "~icons/mdi/attachment";
 
-  const title = ref("Text Block");
+  const title = ref("Attachments");
 </script>

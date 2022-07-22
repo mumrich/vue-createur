@@ -26,50 +26,12 @@
 </template>
 
 <script setup lang="ts">
-  import MdiAttachment from "~icons/mdi/attachment";
-  import MdiFormatText from "~icons/mdi/format-text";
-  import MdiImageMultipleOutline from "~icons/mdi/image-multiple-outline";
   import VueDraggable from "vuedraggable";
   import WidgetTemplateVue from "../components/WidgetTemplate.vue";
   import WidgetInstanceVue from "../components/WidgetInstance.vue";
-  import { computed, FunctionalComponent, ref } from "vue";
-  import { defineMemoireWithBroadcastChannel } from "mumrich-vue-memoire";
+  import { computed, ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
-  import { importCreateurWidgetsPromise } from "../helpers/WidgetHelper";
-
-  const createurWidgets = await importCreateurWidgetsPromise();
-
-  type WidgetTemplate = {
-    title: string;
-    icon: FunctionalComponent;
-  };
-
-  type WidgetInstance = {
-    uid: string;
-  } & WidgetTemplate;
-
-  type WidgetsState = {
-    widgetsSource: WidgetTemplate[];
-    widgetsTarget: WidgetInstance[];
-  };
-
-  const memoire = defineMemoireWithBroadcastChannel<WidgetsState>("widgets", {
-    widgetsSource: [
-      {
-        title: "Text Block",
-        icon: MdiFormatText,
-      },
-      {
-        title: "Image Gallery",
-        icon: MdiImageMultipleOutline,
-      },
-      {
-        title: "Attachments",
-        icon: MdiAttachment,
-      },
-    ],
-    widgetsTarget: [],
-  });
+  import { widgetMemoire, WidgetInstance, WidgetTemplate } from "../memoire";
 
   const groupSource = ref({
     name: "widgets",
@@ -79,12 +41,12 @@
   const groupTarget = ref({
     name: groupSource.value.name,
   });
-  const widgetsSource = computed(() => memoire.state.value.widgetsSource);
+  const widgetsSource = computed(() => widgetMemoire.state.value.widgetsSource);
 
   const widgetsTarget = computed({
-    get: () => memoire.state.value.widgetsTarget,
+    get: () => widgetMemoire.state.value.widgetsTarget,
     set: (targets) =>
-      memoire.update((state) => {
+      widgetMemoire.update((state) => {
         state.widgetsTarget = targets;
       }),
   });

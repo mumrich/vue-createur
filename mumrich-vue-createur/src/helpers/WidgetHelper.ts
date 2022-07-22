@@ -1,20 +1,18 @@
-import { Component } from "vue";
+import { Component, AsyncComponentLoader } from "vue";
 
 export const CREATEUR_WIDGETS_SEARCH_EXPR =
   /[a-zA-Z0-9\-_]+(?=\/([w|W]idget|[e|E]ditor|[t|T]emplate)\.vue)/;
 
 export interface CreateurWidget {
   id: string;
-  editor?: () => Promise<Component>;
-  template?: () => Promise<Component>;
-  widget?: () => Promise<Component>;
+  editor?: AsyncComponentLoader;
+  template?: AsyncComponentLoader;
+  widget?: AsyncComponentLoader;
   defaultProps: Record<string, any>;
 }
 
-export function importCreateurWidgetsPromise(): Promise<
-  Map<string, CreateurWidget>
-> {
-  return new Promise((resolve, reject) => {
+export function importCreateurWidgetsPromise(): Promise<CreateurWidget[]> {
+  return new Promise((resolve, _reject) => {
     const modules = import.meta.glob<Component>("../widgets/**/*.vue");
     const widgetsMap = new Map<string, CreateurWidget>();
 
@@ -23,7 +21,7 @@ export function importCreateurWidgetsPromise(): Promise<
 
       if (matches !== null && matches.length > 1 && matches.input) {
         const widgetName = matches[0];
-        const componentType = matches[0];
+        const componentType = matches[1];
         const componentUri = matches.input;
 
         if (!widgetsMap.has(widgetName)) {
@@ -43,10 +41,12 @@ export function importCreateurWidgetsPromise(): Promise<
       }
     });
 
-    if (widgetsMap.size > 0) {
-      resolve(widgetsMap);
-    } else {
-      reject(new Error("no components found"));
+    const response: CreateurWidget[] = [];
+
+    for (const [_key, widget] of widgetsMap) {
+      response.push(widget);
     }
+
+    resolve(response);
   });
 }

@@ -5,6 +5,7 @@
     :sort="false"
     :itemKey="getItemKeyForSource"
     :clone="onClone"
+    class="min-h-10 min-w-10"
   >
     <template #item="{ element }">
       <div class="template-wrapper">

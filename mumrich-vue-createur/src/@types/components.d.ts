@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     CreateurWidgetsTarget: typeof import('./../components/CreateurWidgetsTarget.vue')['default']
     CreateurWidgetTemplate: typeof import('./../components/CreateurWidgetTemplate.vue')['default']
     CreateurWidgetTemplates: typeof import("../components/CreateurWidgetTemplates.vue")["default"]
+    ModalWindow: typeof import('./../components/ModalWindow.vue')['default']
     Nav: typeof import('./../components/Nav.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

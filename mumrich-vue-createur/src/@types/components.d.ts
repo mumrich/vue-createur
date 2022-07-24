@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     CeateurWidgetsSource: typeof import('./../components/CeateurWidgetsSource.vue')['default']
+    CreateurWidgetsTarget: typeof import('./../components/CreateurWidgetsTarget.vue')['default']
     CreateurWidgetTemplates: typeof import("../components/CreateurWidgetTemplates.vue")["default"]
     Nav: typeof import('./../components/Nav.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

@@ -1,6 +1,5 @@
 <template>
   <VueDraggable
-    class="flex flex-row"
     :list="props.widgets"
     :group="groupSource"
     :sort="false"
@@ -8,15 +7,21 @@
     :clone="onClone"
   >
     <template #item="{ element }">
-      <component :is="element.template" />
+      <div>
+        <component :is="element.template" />
+      </div>
     </template>
   </VueDraggable>
 </template>
 
 <script setup lang="ts">
   import VueDraggable from "vuedraggable";
-  import { CreateurWidgetRegistered } from "../helpers/WidgetHelper";
+  import {
+    CreateurWidgetInstance,
+    CreateurWidgetRegistered,
+  } from "../helpers/WidgetHelper";
   import { PropType, ref } from "vue";
+  import { v4 as uuidv4 } from "uuid";
 
   const props = defineProps({
     widgets: {
@@ -40,7 +45,13 @@
     return element.id;
   }
 
-  function onClone(original: CreateurWidgetRegistered) {
-    debugger;
+  function onClone(original: CreateurWidgetRegistered): CreateurWidgetInstance {
+    return {
+      uid: uuidv4(),
+      editor: original.editor,
+      template: original.template,
+      widget: original.template,
+      props: Object.assign({}, original.defaultProps),
+    };
   }
 </script>

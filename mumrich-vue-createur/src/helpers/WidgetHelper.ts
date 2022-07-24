@@ -3,18 +3,28 @@ import { App, AsyncComponentLoader, defineAsyncComponent } from "vue";
 export const CREATEUR_WIDGETS_SEARCH_EXPR =
   /[a-zA-Z0-9\-_]+(?=\/([w|W]idget|[e|E]ditor|[t|T]emplate)\.vue)/;
 
-export interface CreateurWidget<TWidget> {
-  id: string;
+export interface CreateurWidgetBase<TWidget> {
   editor?: TWidget;
   template?: TWidget;
   widget?: TWidget;
+}
+
+export interface CreateurWidgetDefinition<TWidget>
+  extends CreateurWidgetBase<TWidget> {
+  id: string;
   defaultProps: Record<string, any>;
 }
 
 export interface CreateurWidgetUnregistered
-  extends CreateurWidget<AsyncComponentLoader> {}
+  extends CreateurWidgetDefinition<AsyncComponentLoader> {}
 
-export interface CreateurWidgetRegistered extends CreateurWidget<string> {}
+export interface CreateurWidgetRegistered
+  extends CreateurWidgetDefinition<string> {}
+
+export interface CreateurWidgetInstance extends CreateurWidgetBase<string> {
+  uid: string;
+  props: Record<string, any>;
+}
 
 export function getCreateurWidgets(
   modules: Record<string, () => Promise<AsyncComponentLoader<any>>>

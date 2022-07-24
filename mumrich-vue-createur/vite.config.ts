@@ -10,7 +10,7 @@ export default defineConfig({
   plugins: [
     Vue(),
     Components({
-      dts: "./src/@types/components.d.ts",
+      dts: "src/@types/components.d.ts",
       resolvers: [
         IconsResolver({
           prefix: "icon",
@@ -20,4 +20,9 @@ export default defineConfig({
     Icons({ compiler: "vue3" }),
     WindiCSS(),
   ],
+  resolve: {
+    alias: {
+      "@/": "src/",
+    },
+  },
 });

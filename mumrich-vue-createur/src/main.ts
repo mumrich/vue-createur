@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { AsyncComponentLoader, createApp } from "vue";
 import App from "./App.vue";
 import "virtual:windi.css";
 import "virtual:windi-devtools";
@@ -10,10 +10,11 @@ const app = createApp(App);
 
 app.use(router);
 
-const { templates, editors, widgets } = registerCreateurWidgets(app);
+const modules = import.meta.glob<AsyncComponentLoader>("/src/widgets/**/*.vue");
+const awailableCreateurWidgets = registerCreateurWidgets(app, modules);
 
 widgetMemoire.update((draftState) => {
-  draftState.widgetTemplates = templates.map((t) => ({ name: t }));
+  draftState.awailableCreateurWidgets = awailableCreateurWidgets;
 });
 
 app.mount("#app");

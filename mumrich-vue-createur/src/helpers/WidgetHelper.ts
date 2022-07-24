@@ -3,18 +3,23 @@ import { App, AsyncComponentLoader, defineAsyncComponent } from "vue";
 export const CREATEUR_WIDGETS_SEARCH_EXPR =
   /[a-zA-Z0-9\-_]+(?=\/([w|W]idget|[e|E]ditor|[t|T]emplate)\.vue)/;
 
-export interface CreateurWidget {
+export interface CreateurWidget<TWidget> {
   id: string;
-  editor?: AsyncComponentLoader;
-  template?: AsyncComponentLoader;
-  widget?: AsyncComponentLoader;
+  editor?: TWidget;
+  template?: TWidget;
+  widget?: TWidget;
   defaultProps: Record<string, any>;
 }
 
+export interface CreateurWidgetUnregistered
+  extends CreateurWidget<AsyncComponentLoader> {}
+
+export interface CreateurWidgetRegistered extends CreateurWidget<string> {}
+
 export function getCreateurWidgets(
-  modules = import.meta.glob<AsyncComponentLoader>("/src/widgets/**/*.vue")
-): CreateurWidget[] {
-  const widgetsMap = new Map<string, CreateurWidget>();
+  modules: Record<string, () => Promise<AsyncComponentLoader<any>>>
+): CreateurWidgetUnregistered[] {
+  const widgetsMap = new Map<string, CreateurWidgetUnregistered>();
 
   Object.keys(modules).forEach((mod) => {
     const matches = mod.match(CREATEUR_WIDGETS_SEARCH_EXPR);
@@ -31,8 +36,10 @@ export function getCreateurWidgets(
           defaultProps: {},
         });
       } else {
-        const createurWidget = widgetsMap.get(widgetName) as CreateurWidget;
-        const newCreateurWidget: CreateurWidget = {
+        const createurWidget = widgetsMap.get(
+          widgetName
+        ) as CreateurWidgetUnregistered;
+        const newCreateurWidget: CreateurWidgetUnregistered = {
           ...createurWidget,
           [componentType]: modules[componentUri],
         };
@@ -41,7 +48,7 @@ export function getCreateurWidgets(
     }
   });
 
-  const response: CreateurWidget[] = [];
+  const response: CreateurWidgetUnregistered[] = [];
 
   for (const [_key, widget] of widgetsMap) {
     response.push(widget);
@@ -50,31 +57,45 @@ export function getCreateurWidgets(
   return response;
 }
 
-export function registerCreateurWidgets(app: App) {
-  const cws = getCreateurWidgets();
-  const templates: string[] = [];
-  const editors: string[] = [];
-  const widgets: string[] = [];
+export function registerCreateurWidgets(
+  app: App,
+  modules: Record<string, () => Promise<AsyncComponentLoader<any>>>
+) {
+  const unregisteredCWs = getCreateurWidgets(modules);
+  const registeredCWs: CreateurWidgetRegistered[] = [];
 
-  for (const cw of cws) {
-    if (cw.editor) {
-      const cid = `we-${cw.id}`;
-      app.component(cid, defineAsyncComponent(cw.editor));
-      editors.push(cid);
+  for (const unregisteredCW of unregisteredCWs) {
+    const registeredCW: CreateurWidgetRegistered = {
+      id: unregisteredCW.id,
+      defaultProps: unregisteredCW.defaultProps,
+    };
+
+    if (unregisteredCW.editor) {
+      registeredCW.editor = `cwe-${unregisteredCW.id}`;
+      app.component(
+        registeredCW.editor,
+        defineAsyncComponent(unregisteredCW.editor)
+      );
     }
 
-    if (cw.template) {
-      const cid = `wt-${cw.id}`;
-      app.component(cid, defineAsyncComponent(cw.template));
-      templates.push(cid);
+    if (unregisteredCW.template) {
+      registeredCW.template = `cwt-${unregisteredCW.id}`;
+      app.component(
+        registeredCW.template,
+        defineAsyncComponent(unregisteredCW.template)
+      );
     }
 
-    if (cw.widget) {
-      const cid = cw.id;
-      app.component(cid, defineAsyncComponent(cw.widget));
-      widgets.push(cid);
+    if (unregisteredCW.widget) {
+      registeredCW.widget = `cw-${unregisteredCW.id}`;
+      app.component(
+        registeredCW.widget,
+        defineAsyncComponent(unregisteredCW.widget)
+      );
     }
+
+    registeredCWs.push(registeredCW);
   }
 
-  return { templates, editors, widgets };
+  return registeredCWs;
 }

@@ -1,12 +1,14 @@
 <template>
   <h2>Widgets Source Template</h2>
   <p class="flex flex-row">
-    <button @click="widgetMemoire.undo()">
-      <span><MdiUndo /> Undo</span>
-    </button>
-    <button @click="widgetMemoire.redo()">
-      <span><MdiRedo /> Redo</span>
-    </button>
+    <ButtonVue @click="widgetMemoire.undo()">
+      <MdiUndo />
+      <span>Undo</span>
+    </ButtonVue>
+    <ButtonVue @click="widgetMemoire.redo()">
+      <MdiRedo />
+      <span>Redo</span>
+    </ButtonVue>
   </p>
   <div class="flex flex-row w-full">
     <CeateurWidgetsSourceVue
@@ -15,18 +17,19 @@
     />
     <CreateurWidgetsTargetVue
       v-model="createurWidgetsInstances"
-      class="flex flex-row flex-grow bg-gray-100"
+      class="flex flex-row"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-  import { computed } from "vue";
-  import { widgetMemoire } from "../memoire";
+  import ButtonVue from "../components/Button.vue";
   import CeateurWidgetsSourceVue from "../components/CeateurWidgetsSource.vue";
   import CreateurWidgetsTargetVue from "../components/CreateurWidgetsTarget.vue";
-  import MdiUndo from "~icons/mdi/undo";
   import MdiRedo from "~icons/mdi/redo";
+  import MdiUndo from "~icons/mdi/undo";
+  import { computed } from "vue";
+  import { widgetMemoire } from "../memoire";
 
   const awailableCreateurWidgets = computed(
     () => widgetMemoire.state.value.awailableCreateurWidgets
@@ -40,15 +43,3 @@
       }),
   });
 </script>
-
-<style scoped>
-  button {
-    @apply m-1 p-2;
-    @apply shadow;
-    @apply flex flex-row align-middle justify-center items-center;
-  }
-
-  button:hover {
-    @apply bg-gray-50;
-  }
-</style>

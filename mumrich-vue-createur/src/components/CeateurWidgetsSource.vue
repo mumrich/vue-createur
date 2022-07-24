@@ -6,6 +6,8 @@
     :itemKey="getItemKeyForSource"
     :clone="onClone"
     class="min-h-10 min-w-10"
+    @start="onStart"
+    @end="onEnd"
   >
     <template #item="{ element }">
       <div class="template-wrapper">
@@ -24,9 +26,18 @@
   import {
     CreateurWidgetInstance,
     CreateurWidgetRegistered,
+    createurWidgetTargetSettings,
   } from "../helpers/WidgetHelper";
   import { PropType, ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
+
+  function onStart() {
+    createurWidgetTargetSettings.value.showDropzone = true;
+  }
+
+  function onEnd() {
+    createurWidgetTargetSettings.value.showDropzone = false;
+  }
 
   const props = defineProps({
     widgets: {

@@ -1,4 +1,4 @@
-import { App, AsyncComponentLoader, defineAsyncComponent } from "vue";
+import { App, AsyncComponentLoader, defineAsyncComponent, ref } from "vue";
 
 export const CREATEUR_WIDGETS_SEARCH_EXPR =
   /[a-zA-Z0-9\-_]+(?=\/([w|W]idget|[e|E]ditor|[t|T]emplate|[p|P]review)\.vue)/;
@@ -118,3 +118,7 @@ export function registerCreateurWidgets(
 
   return registeredCWs;
 }
+
+export const createurWidgetTargetSettings = ref({
+  showDropzone: false,
+});

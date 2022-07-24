@@ -1,15 +1,21 @@
 <template>
   <VueDraggable
-    v-model="widgets"
+    :class="draggableClass"
     :group="groupTarget"
     :itemKey="getItemKeyForTarget"
-    class="flex-grow min-h-10 min-w-10"
+    class="min-h-10 min-w-10"
+    v-model="widgets"
+    v-bind="$attrs"
   >
     <template #item="{ element, index }">
       <div class="relative">
         <div class="actions">
-          <MdiDelete @click="deleteWidgetInstance(index)" />
-          <MdiPencil v-if="element.editor" @click="editWidgetInstance(index)" />
+          <ButtonVue @click="deleteWidgetInstance(index)">
+            <MdiDelete />
+          </ButtonVue>
+          <ButtonVue>
+            <MdiPencil @click="editWidgetInstance(index)" />
+          </ButtonVue>
         </div>
         <div class="preview-wrapper">
           <component v-if="element.preview" :is="element.preview" />
@@ -22,16 +28,39 @@
       </div>
     </template>
   </VueDraggable>
-  <ModalWindowVue :show="showModalWindow" @close="onCloseModalWindow" />
+  <ModalWindowVue
+    :show="showModalWindow"
+    @close="onCloseModalWindow"
+    @ok="onOkModalWindow"
+    @cancel="onCancelModalWindow"
+  >
+    <component
+      v-if="widgetUnderEdit"
+      :is="widgetUnderEdit.editor"
+      v-bind="widgetUnderEdit.props"
+    />
+  </ModalWindowVue>
 </template>
 
 <script setup lang="ts">
+  import ButtonVue from "./Button.vue";
   import MdiDelete from "~icons/mdi/delete";
   import MdiPencil from "~icons/mdi/pencil";
-  import VueDraggable from "vuedraggable";
   import ModalWindowVue from "../components/ModalWindow.vue";
-  import { CreateurWidgetInstance } from "../helpers/WidgetHelper";
+  import VueDraggable from "vuedraggable";
+  import {
+    CreateurWidgetInstance,
+    createurWidgetTargetSettings,
+  } from "../helpers/WidgetHelper";
   import { computed, PropType, ref } from "vue";
+
+  const showDropzone = computed(
+    () => createurWidgetTargetSettings.value.showDropzone
+  );
+
+  const draggableClass = computed(() => ({
+    dropzone: showDropzone.value,
+  }));
 
   const props = defineProps({
     modelValue: {
@@ -50,7 +79,8 @@
     },
   });
 
-  const showModalWindow = ref(false);
+  const widgetUnderEdit = ref<CreateurWidgetInstance | null>(null);
+  const showModalWindow = computed(() => widgetUnderEdit.value !== null);
 
   const emit = defineEmits<{
     (
@@ -75,11 +105,19 @@
   }
 
   function onCloseModalWindow() {
-    showModalWindow.value = false;
+    widgetUnderEdit.value = null;
   }
 
   function editWidgetInstance(index: number) {
-    showModalWindow.value = true;
+    widgetUnderEdit.value = widgets.value[index];
+  }
+
+  function onOkModalWindow() {
+    widgetUnderEdit.value = null;
+  }
+
+  function onCancelModalWindow() {
+    widgetUnderEdit.value = null;
   }
 
   function deleteWidgetInstance(index: number) {
@@ -111,12 +149,17 @@
   }
 
   .actions {
-    @apply top-0 right-0 absolute;
+    @apply top-0 right-1 absolute;
     @apply flex flex-row;
   }
 
   .actions > * {
-    @apply rounded-full cursor-pointer bg-gray-400 shadow p-1 hover:bg-gray-500;
-    @apply mr-1;
+    @apply rounded-full;
+  }
+
+  .dropzone {
+    @apply border-dashed border-4;
+    /* @apply bg-gray-200; */
+    @apply border-gray-400;
   }
 </style>

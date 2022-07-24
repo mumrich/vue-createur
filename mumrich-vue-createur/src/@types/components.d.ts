@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Button: typeof import('./../components/Button.vue')['default']
     CeateurWidgetsSource: typeof import('./../components/CeateurWidgetsSource.vue')['default']
     CreateurWidgetPreview: typeof import('./../components/CreateurWidgetPreview.vue')['default']
     CreateurWidgetsTarget: typeof import('./../components/CreateurWidgetsTarget.vue')['default']
@@ -16,7 +17,7 @@ declare module '@vue/runtime-core' {
     Nav: typeof import('./../components/Nav.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    WidgetInstance: typeof import('./../components/WidgetInstance.vue')['default']
-    WidgetTemplate: typeof import('./../components/WidgetTemplate.vue')['default']
+    WidgetInstance: typeof import("./../components/WidgetInstance.vue")["default"]
+    WidgetTemplate: typeof import("./../components/WidgetTemplate.vue")["default"]
   }
 }

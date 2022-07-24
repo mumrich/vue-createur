@@ -12,7 +12,7 @@ export interface CreateurWidget {
 }
 
 export function getCreateurWidgets(
-  modules = import.meta.glob<AsyncComponentLoader>("../widgets/**/*.vue")
+  modules = import.meta.glob<AsyncComponentLoader>("/src/widgets/**/*.vue")
 ): CreateurWidget[] {
   const widgetsMap = new Map<string, CreateurWidget>();
 

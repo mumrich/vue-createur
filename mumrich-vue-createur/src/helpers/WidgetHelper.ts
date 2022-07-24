@@ -1,4 +1,4 @@
-import { App, AsyncComponentLoader } from "vue";
+import { App, AsyncComponentLoader, defineAsyncComponent } from "vue";
 
 export const CREATEUR_WIDGETS_SEARCH_EXPR =
   /[a-zA-Z0-9\-_]+(?=\/([w|W]idget|[e|E]ditor|[t|T]emplate)\.vue)/;
@@ -59,19 +59,19 @@ export function registerCreateurWidgets(app: App) {
   for (const cw of cws) {
     if (cw.editor) {
       const cid = `we-${cw.id}`;
-      app.component(cid, cw.editor);
+      app.component(cid, defineAsyncComponent(cw.editor));
       editors.push(cid);
     }
 
     if (cw.template) {
       const cid = `wt-${cw.id}`;
-      app.component(cid, cw.template);
+      app.component(cid, defineAsyncComponent(cw.template));
       templates.push(cid);
     }
 
     if (cw.widget) {
       const cid = cw.id;
-      app.component(cid, cw.widget);
+      app.component(cid, defineAsyncComponent(cw.widget));
       widgets.push(cid);
     }
   }

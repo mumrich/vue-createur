@@ -1,17 +1,6 @@
 <template>
   <h2>Widgets Source Template</h2>
-  <VueDraggable
-    class="flex"
-    :list="widgetsSource"
-    :group="groupSource"
-    :sort="false"
-    :itemKey="getItemKeyForSource"
-    :clone="onClone"
-  >
-    <template #item="{ element }">
-      <WidgetTemplateVue v-bind="element" />
-    </template>
-  </VueDraggable>
+  <!-- 
   <hr />
   <VueDraggable
     class="flex flex-col bg-gray-100 p-8"
@@ -21,6 +10,18 @@
   >
     <template #item="{ element, index }">
       <WidgetInstanceVue v-bind="{ ...element, index }" />
+    </template>
+  </VueDraggable> -->
+  <VueDraggable
+    class="flex"
+    :list="widgetsSource"
+    :group="groupSource"
+    :sort="false"
+    :itemKey="getItemKeyForSource"
+    :clone="onClone"
+  >
+    <template #item="{ element }">
+      <component :is="element.name" />
     </template>
   </VueDraggable>
 </template>

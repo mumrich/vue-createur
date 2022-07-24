@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref } from "vue";
+  import { computed } from "vue";
   import { widgetMemoire } from "../memoire";
   import CeateurWidgetsSourceVue from "../components/CeateurWidgetsSource.vue";
   import CreateurWidgetsTargetVue from "../components/CreateurWidgetsTarget.vue";
@@ -23,9 +23,10 @@
 
   const createurWidgetsInstances = computed({
     get: () => widgetMemoire.state.value.createurWidgetsInstances,
-    set: (v) =>
+    set: (v) => {
       widgetMemoire.update((draftState) => {
         draftState.createurWidgetsInstances = v;
-      }),
+      });
+    },
   });
 </script>

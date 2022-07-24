@@ -7,8 +7,12 @@
     :clone="onClone"
   >
     <template #item="{ element }">
-      <div>
-        <component :is="element.template" />
+      <div class="template-wrapper">
+        <component v-if="element.template" :is="element.template" />
+        <p v-else class="fallback-template">
+          <span>No Preview for:</span>
+          <strong>'{{ element.widget }}'</strong>
+        </p>
       </div>
     </template>
   </VueDraggable>
@@ -49,9 +53,30 @@
     return {
       uid: uuidv4(),
       editor: original.editor,
+      preview: original.preview,
       template: original.template,
-      widget: original.template,
+      widget: original.widget,
       props: Object.assign({}, original.defaultProps),
     };
   }
 </script>
+
+<style scoped>
+  .template-wrapper > * {
+    @apply select-none;
+    @apply text-xl;
+    cursor: grab;
+    @apply shadow;
+  }
+
+  .template-wrapper > *:hover {
+    @apply bg-gray-50;
+  }
+
+  .fallback-template {
+    @apply bg-white;
+    @apply flex flex-col justify-center align-middle items-center;
+    @apply shadow m-1 p-2;
+    @apply select-none;
+  }
+</style>

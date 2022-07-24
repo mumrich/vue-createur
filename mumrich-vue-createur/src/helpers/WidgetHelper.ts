@@ -1,11 +1,12 @@
 import { App, AsyncComponentLoader, defineAsyncComponent } from "vue";
 
 export const CREATEUR_WIDGETS_SEARCH_EXPR =
-  /[a-zA-Z0-9\-_]+(?=\/([w|W]idget|[e|E]ditor|[t|T]emplate)\.vue)/;
+  /[a-zA-Z0-9\-_]+(?=\/([w|W]idget|[e|E]ditor|[t|T]emplate|[p|P]review)\.vue)/;
 
 export interface CreateurWidgetBase<TWidget> {
   editor?: TWidget;
   template?: TWidget;
+  preview?: TWidget;
   widget?: TWidget;
 }
 
@@ -93,6 +94,14 @@ export function registerCreateurWidgets(
       app.component(
         registeredCW.template,
         defineAsyncComponent(unregisteredCW.template)
+      );
+    }
+
+    if (unregisteredCW.preview) {
+      registeredCW.preview = `cwp-${unregisteredCW.id}`;
+      app.component(
+        registeredCW.preview,
+        defineAsyncComponent(unregisteredCW.preview)
       );
     }
 

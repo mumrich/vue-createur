@@ -1,7 +1,5 @@
 <template>
-  <div class="widget-instance">
-    <span class="mx-1">{{ props.index + 1 }}</span>
-    <span class="mx-1">{{ props.uid }}</span>
+  <div class="widget-teaser">
     <component :is="props.icon" />
     <span class="widget-teaser-title">{{ props.title }}</span>
   </div>
@@ -19,13 +17,17 @@
       type: Object as PropType<FunctionalComponent>,
       required: true,
     },
-    uid: {
-      type: String,
-      required: true,
-    },
-    index: {
-      type: Number,
-      required: true,
-    },
   });
 </script>
+
+<style scoped>
+  .widget-teaser {
+    @apply border;
+    @apply flex flex-col justify-center align-middle items-center;
+    @apply m-1 p-2;
+  }
+
+  .widget-teaser-title {
+    @apply text-base;
+  }
+</style>

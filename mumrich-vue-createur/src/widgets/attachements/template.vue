@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
   import { ref } from "vue";
-  import WidgetTemplateVue from "../../components/WidgetTemplate.vue";
+  import WidgetTemplateVue from "../../components/CreateurWidgetTemplate.vue";
   import MdiAttachment from "~icons/mdi/attachment";
 
   const title = ref("Attachments");

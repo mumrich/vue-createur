@@ -1,0 +1,5 @@
+{
+    "vite.buildCommand": "yarn build",
+    "vite.devCommand": "yarn dev",
+    "vite.autoStart": false
+}

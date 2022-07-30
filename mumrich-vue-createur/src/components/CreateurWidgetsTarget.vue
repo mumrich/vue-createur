@@ -37,7 +37,8 @@
     <component
       v-if="widgetUnderEdit"
       :is="widgetUnderEdit.editor"
-      v-bind="widgetUnderEdit.props"
+      v-bind:modelValue="widgetUnderEdit.props"
+      @update:modelValue="onModelValueUpdated(widgetUnderEdit?.uid, $event)"
     />
   </ModalWindowVue>
 </template>
@@ -53,6 +54,7 @@
     createurWidgetTargetSettings,
   } from "../helpers/WidgetHelper";
   import { computed, PropType, ref } from "vue";
+  import { widgetMemoire } from "../memoire";
 
   const showDropzone = computed(
     () => createurWidgetTargetSettings.value.showDropzone
@@ -118,6 +120,18 @@
 
   function onCancelModalWindow() {
     widgetUnderEdit.value = null;
+  }
+
+  function onModelValueUpdated(uid: string, newModel: Record<string, any>) {
+    widgetMemoire.update((draftState) => {
+      const widgetIndex = draftState.createurWidgetsInstances.findIndex(
+        (w) => w.uid === uid
+      );
+
+      if (widgetIndex >= 0) {
+        draftState.createurWidgetsInstances[widgetIndex].props = newModel;
+      }
+    });
   }
 
   function deleteWidgetInstance(index: number) {

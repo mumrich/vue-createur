@@ -1,29 +1,41 @@
 <template>
-  <QuillEditor :options="qullOptions" />
+  <QuillEditor
+    :options="qullOptions"
+    v-model:content="editorModelValue"
+    @ready="onQuillReady"
+  />
 </template>
 
 <script setup lang="ts">
-  import { QuillEditor } from "@vueup/vue-quill";
+  import { QuillEditor, Quill, Delta } from "@vueup/vue-quill";
   import "@vueup/vue-quill/dist/vue-quill.snow.css";
-  import { ref } from "vue";
+  import { watch, ref } from "vue";
+  import { QuillOptionsStatic, WidgetTextBlockProps } from "./Contracts";
 
-  interface StringMap {
-    [key: string]: any;
+  interface EditorProps {
+    modelValue: WidgetTextBlockProps;
   }
 
-  interface QuillOptionsStatic {
-    debug?: string | boolean | undefined;
-    modules?: StringMap | undefined;
-    placeholder?: string | undefined;
-    readOnly?: boolean | undefined;
-    theme?: string | undefined;
-    formats?: string[] | undefined;
-    bounds?: HTMLElement | string | undefined;
-    scrollingContainer?: HTMLElement | string | undefined;
-    strict?: boolean | undefined;
+  const props = defineProps<EditorProps>();
+  const emit = defineEmits<{
+    (event: "update:modelValue", value: WidgetTextBlockProps): void;
+  }>();
+
+  const editorModelValue = ref<Delta>();
+  const quill = ref<Quill>();
+
+  function onQuillReady(q: Quill) {
+    q.setHTML(props.modelValue.html);
+    quill.value = q;
   }
 
-  const qullOptions = ref<QuillOptionsStatic>({
-    placeholder: "Compose an epic...",
+  watch(editorModelValue, () => {
+    const html = quill.value?.getHTML() as string | undefined;
+
+    if (html) {
+      emit("update:modelValue", { ...props.modelValue, html });
+    }
   });
+
+  const qullOptions = ref<QuillOptionsStatic>({});
 </script>

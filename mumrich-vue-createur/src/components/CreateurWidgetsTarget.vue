@@ -38,7 +38,7 @@
       v-if="widgetUnderEdit"
       :is="widgetUnderEdit.editor"
       v-bind:modelValue="widgetUnderEdit.props"
-      @update:modelValue="onModelValueUpdated(widgetUnderEdit?.uid, $event)"
+      @update:modelValue="onModelValueUpdated($event)"
     />
   </ModalWindowVue>
 </template>
@@ -111,10 +111,20 @@
   }
 
   function editWidgetInstance(index: number) {
-    widgetUnderEdit.value = widgets.value[index];
+    widgetUnderEdit.value = { ...widgets.value[index] };
   }
 
   function onOkModalWindow() {
+    widgetMemoire.update((draftState) => {
+      const widgetIndex = draftState.createurWidgetsInstances.findIndex(
+        (w) => w.uid === widgetUnderEdit.value?.uid
+      );
+
+      if (widgetIndex >= 0 && widgetUnderEdit.value) {
+        draftState.createurWidgetsInstances[widgetIndex].props =
+          widgetUnderEdit.value?.props;
+      }
+    });
     widgetUnderEdit.value = null;
   }
 
@@ -122,16 +132,10 @@
     widgetUnderEdit.value = null;
   }
 
-  function onModelValueUpdated(uid: string, newModel: Record<string, any>) {
-    widgetMemoire.update((draftState) => {
-      const widgetIndex = draftState.createurWidgetsInstances.findIndex(
-        (w) => w.uid === uid
-      );
-
-      if (widgetIndex >= 0) {
-        draftState.createurWidgetsInstances[widgetIndex].props = newModel;
-      }
-    });
+  function onModelValueUpdated(newProps: Record<string, any>) {
+    if (widgetUnderEdit.value) {
+      widgetUnderEdit.value.props = newProps;
+    }
   }
 
   function deleteWidgetInstance(index: number) {

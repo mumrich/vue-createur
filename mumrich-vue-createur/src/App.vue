@@ -9,3 +9,5 @@
   <hr />
   <router-view></router-view>
 </template>
+
+<style src="./app.css" />

@@ -1,9 +1,9 @@
-import { AsyncComponentLoader, createApp } from "vue";
-import App from "./App.vue";
-import "virtual:windi.css";
 import "virtual:windi-devtools";
-import { router } from "./router";
+import "virtual:windi.css";
+import App from "./App.vue";
+import { AsyncComponentLoader, createApp } from "vue";
 import { registerCreateurWidgets } from "./helpers/WidgetHelper";
+import { router } from "./router";
 import { widgetMemoire } from "./memoire";
 
 const app = createApp(App);

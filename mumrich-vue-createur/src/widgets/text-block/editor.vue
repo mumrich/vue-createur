@@ -1,41 +1,58 @@
 <template>
-  <QuillEditor
-    :options="qullOptions"
-    v-model:content="editorModelValue"
-    @ready="onQuillReady"
-  />
+  <div class="flex flex-row">
+    <div ref="editorEl" class="editor" />
+    <div class="markdown">
+      <WidgetVue :markdown="markdownModel" />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-  import { QuillEditor, Quill, Delta } from "@vueup/vue-quill";
-  import "@vueup/vue-quill/dist/vue-quill.snow.css";
-  import { watch, ref } from "vue";
-  import { QuillOptionsStatic, WidgetTextBlockProps } from "./Contracts";
+  import WidgetVue, { WidgetTextBlockProps } from "./widget.vue";
+  import loader from "@monaco-editor/loader";
+  import { computed, onMounted, PropType, ref, watch } from "vue";
+  import { editor } from "monaco-editor/esm/vs/editor/editor.api";
 
-  interface EditorProps {
-    modelValue: WidgetTextBlockProps;
-  }
-
-  const props = defineProps<EditorProps>();
+  const editorEl = ref<HTMLDivElement>();
+  const props = defineProps({
+    modelValue: {
+      type: Object as PropType<WidgetTextBlockProps>,
+    },
+  });
   const emit = defineEmits<{
-    (event: "update:modelValue", value: WidgetTextBlockProps): void;
+    (emit: "update:modelValue", v: WidgetTextBlockProps): void;
   }>();
 
-  const editorModelValue = ref<Delta>();
-  const quill = ref<Quill>();
-
-  function onQuillReady(q: Quill) {
-    q.setHTML(props.modelValue.html);
-    quill.value = q;
-  }
-
-  watch(editorModelValue, () => {
-    const html = quill.value?.getHTML() as string | undefined;
-
-    if (html) {
-      emit("update:modelValue", { ...props.modelValue, html });
-    }
+  const markdownModel = computed({
+    get: () => props.modelValue?.markdown ?? "",
+    set: (v) => emit("update:modelValue", { ...props.modelValue, markdown: v }),
   });
 
-  const qullOptions = ref<QuillOptionsStatic>({});
+  let codeEditor: editor.IStandaloneCodeEditor | null = null;
+
+  onMounted(async () => {
+    const editorOptions = {
+      language: "markdown",
+      value: markdownModel.value,
+      minimap: { enabled: false },
+    };
+    const monaco = await loader.init();
+    codeEditor = monaco.editor.create(editorEl.value!, editorOptions);
+
+    codeEditor.onDidChangeModelContent(() => {
+      markdownModel.value = codeEditor?.getValue() ?? "";
+    });
+  });
 </script>
+
+<style scoped>
+  .editor {
+    width: 400px;
+    height: 300px;
+  }
+
+  .markdown {
+    width: 400px;
+    height: 300px;
+  }
+</style>

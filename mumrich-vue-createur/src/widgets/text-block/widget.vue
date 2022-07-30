@@ -1,5 +1,5 @@
 <template>
-  <p v-html="props.content"></p>
+  <p v-html="props.html"></p>
 </template>
 
 <script setup lang="ts">

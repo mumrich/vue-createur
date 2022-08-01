@@ -1,3 +1,9 @@
+html,
+body,
+#app {
+  @apply h-full;
+}
+
 h1 {
   @apply text-3xl;
 }

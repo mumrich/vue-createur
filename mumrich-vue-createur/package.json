@@ -1,8 +1,27 @@
 {
   "name": "mumrich-vue-createur",
-  "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "license": "MIT",
+  "author": {
+    "name": "Hannes Morgenthaler",
+    "email": "hannes@morgethaler.ch"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "url": "https://github.com/mumrich/vue-createur",
+    "type": "git"
+  },
+  "main": "./dist/mumrich-vue-createur.umd.js",
+  "module": "./dist/mumrich-vue-createur.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/mumrich-vue-createur.es.js",
+      "require": "./dist/mumrich-vue-createur.umd.js"
+    }
+  },
+  "types": "dist/types/lib.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
@@ -10,6 +29,7 @@
   },
   "dependencies": {
     "@monaco-editor/loader": "^1.3.2",
+    "@types/node": "^18.6.3",
     "@vueuse/core": "^9.0.2",
     "dompurify": "^2.3.10",
     "immer": "^9.0.15",

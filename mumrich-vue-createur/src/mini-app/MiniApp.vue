@@ -1,0 +1,1 @@
+<template>Mini-App</template>

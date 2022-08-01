@@ -15,12 +15,9 @@
       "DOM"
     ],
     "skipLibCheck": true,
-    "types": [
-      "unplugin-icons/types/vue"
-    ],
     "paths": {
       "@/*": [
-        "./src/"
+        "src/*"
       ]
     }
   },

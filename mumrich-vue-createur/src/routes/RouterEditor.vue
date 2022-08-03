@@ -1,9 +1,10 @@
 <template>
   <div class="wrapper">
     <div>
+      <span><input type="checkbox" v-model="edit" />edit?</span>
       <ol>
         <li v-for="route in miniAppRoutes" :key="route.path">
-          <RouteEditorVue :routePath="route.path" />
+          <RouteEditorVue :routePath="route.path" :edit="edit" />
         </li>
       </ol>
     </div>
@@ -21,6 +22,7 @@
   import { createRouter, createWebHashHistory } from "vue-router";
   import { miniAppMemoire } from "../mini-app/Memoire";
 
+  const edit = ref(false);
   const miniAppEl = ref<HTMLDivElement>();
   const miniApp = createApp(MiniAppVue);
   const router = createRouter({

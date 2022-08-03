@@ -1,6 +1,14 @@
 <template>
-  <input v-model="routePath" />
-  <input v-model="routeName" />
+  <div class="flex flex-col">
+    <template v-if="props.edit">
+      <input v-model="routePath" />
+      <input v-model="routeName" />
+    </template>
+    <template v-else>
+      <span>{{ routePath }}</span>
+      <span>{{ routeName }}</span>
+    </template>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -10,6 +18,7 @@
 
   const props = defineProps<{
     routePath: string;
+    edit: boolean;
   }>();
 
   const routeId = computed(() =>

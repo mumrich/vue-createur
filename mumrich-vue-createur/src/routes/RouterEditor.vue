@@ -8,10 +8,8 @@
       </ol>
     </div>
   </div>
-  <p>
-    <textarea :value="miniAppRoutesSerialized" readonly class="h-96 w-full" />
-  </p>
-  <p>
+  <hr />
+  <p class="bg-gray-50">
     <div ref="miniAppEl">...</div>
   </p>
 </template>

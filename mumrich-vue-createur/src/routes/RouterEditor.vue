@@ -3,42 +3,36 @@
     <div>
       <ol>
         <li v-for="route in miniAppRoutes" :key="route.path">
-          <input v-model="getComputedForRoute(route.path)" />
+          <RouteEditorVue :routePath="route.path" />
         </li>
       </ol>
     </div>
-    <div ref="miniAppEl">...</div>
   </div>
+  <p>
+    <textarea :value="miniAppRoutesSerialized" readonly class="h-96 w-full" />
+  </p>
+  <p>
+    <div ref="miniAppEl">...</div>
+  </p>
 </template>
 
 <script setup lang="ts">
-  import { useMiniAppMemoire } from "@/mini-app/Memoire";
+  import MiniAppVue from "../mini-app/MiniApp.vue";
+  import RouteEditorVue from "../components/RouteEditor.vue";
   import { computed, createApp, onMounted, ref } from "vue";
   import { createRouter, createWebHashHistory } from "vue-router";
-  import MiniAppVue from "../mini-app/MiniApp.vue";
+  import { miniAppMemoire } from "../mini-app/Memoire";
 
   const miniAppEl = ref<HTMLDivElement>();
   const miniApp = createApp(MiniAppVue);
-  const miniAppMemoire = useMiniAppMemoire();
   const router = createRouter({
     history: createWebHashHistory(),
     routes: miniAppMemoire.state.value.routes,
   });
   const miniAppRoutes = computed(() => miniAppMemoire.state.value.routes);
-
-  function getComputedForRoute(routePath: string) {
-    return computed({
-      get: () => miniAppRoutes.value.find((r) => r.path === routePath),
-      set: (v) =>
-        miniAppMemoire.update((draftState) => {
-          draftState.routes.splice(
-            miniAppRoutes.value.findIndex((r) => r.path === routePath),
-            1,
-            v!
-          );
-        }),
-    });
-  }
+  const miniAppRoutesSerialized = computed(() =>
+    JSON.stringify(miniAppRoutes.value, null, 2)
+  );
 
   miniApp.use(router);
 

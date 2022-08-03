@@ -28,9 +28,6 @@
     routes: miniAppMemoire.state.value.routes,
   });
   const miniAppRoutes = computed(() => miniAppMemoire.state.value.routes);
-  const miniAppRoutesSerialized = computed(() =>
-    JSON.stringify(miniAppRoutes.value, null, 2)
-  );
 
   miniApp.use(router);
 

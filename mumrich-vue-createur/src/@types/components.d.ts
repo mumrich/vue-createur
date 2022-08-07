@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     ModalWindow: typeof import('./../components/ModalWindow.vue')['default']
     Nav: typeof import('./../components/Nav.vue')['default']
     RouteEditor: typeof import('./../components/RouteEditor.vue')['default']
+    RouterEditor: typeof import('./../components/RouterEditor.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     WidgetInstance: typeof import("./../components/WidgetInstance.vue")["default"]

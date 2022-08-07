@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <RouterEditorVue />
+    <RouterEditorVue v-model="miniAppRoutes" />
   </div>
   <hr />
   <p class="bg-gray-50">
@@ -10,10 +10,10 @@
 
 <script setup lang="ts">
   import MiniAppVue from "../mini-app/MiniApp.vue";
-  import { createApp, onMounted, ref } from "vue";
+  import RouterEditorVue from "../components/RouterEditor.vue";
+  import { computed, createApp, onMounted, ref } from "vue";
   import { createRouter, createWebHashHistory } from "vue-router";
   import { miniAppMemoire } from "../mini-app/Memoire";
-  import RouterEditorVue from "../components/RouterEditor.vue";
 
   const miniAppEl = ref<HTMLDivElement>();
   const miniApp = createApp(MiniAppVue);
@@ -22,6 +22,12 @@
     routes: miniAppMemoire.state.value.routes,
   });
   
+  const miniAppRoutes = computed({
+    get: () => [...miniAppMemoire.state.value.routes],
+    set: (v) => miniAppMemoire.update(draftState => {
+      draftState.routes = v
+    })
+  });
 
   miniApp.use(router);
 
@@ -36,9 +42,5 @@
   .wrapper {
     @apply w-full;
     @apply flex flex-row justify-around;
-  }
-
-  .wrapper > * {
-    @apply bg-gray-200;
   }
 </style>

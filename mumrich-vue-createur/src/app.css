@@ -7,3 +7,14 @@ body,
 h1 {
   @apply text-3xl;
 }
+
+button {
+  @apply m-2 py-1 px-2;
+  @apply rounded shadow;
+  @apply bg-gray-50 hover:bg-gray-200;
+}
+
+ul,
+ol {
+  @apply pl-3;
+}

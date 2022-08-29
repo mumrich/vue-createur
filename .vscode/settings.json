@@ -1,5 +1,8 @@
 {
     "vite.buildCommand": "yarn build",
     "vite.devCommand": "yarn dev",
-    "vite.autoStart": false
+    "vite.autoStart": false,
+    "i18n-ally.localesPaths": [
+        "mumrich-vue-createur/src/i18n"
+    ]
 }

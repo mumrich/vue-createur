@@ -23,11 +23,6 @@ export default defineConfig({
     Icons({ compiler: "vue3" }),
     WindiCSS(),
   ],
-  resolve: {
-    alias: {
-      "@/": "src/",
-    },
-  },
   build: {
     lib: {
       entry: resolve(__dirname, "src/lib.ts"),
